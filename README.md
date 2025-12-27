@@ -172,16 +172,15 @@ http://localhost:8080/api/docs/swagger-ui
 ## 7. Ports & Services Reference
 
 | Service       | Purpose             | Container Name     | Port | Access URL                                     |
-| ------------- | ------------------- | ------------------ | ---- | ---------------------------------------------- |
+| ------------- | ------------------- | ------------------ | ---- |------------------------------------------------|
 | Auth Service  | Spring Boot backend | auth-service       | 8080 | [http://localhost:8080](http://localhost:8080) |
-| PostgreSQL    | Primary database    | auth-postgres      | 5432 | localhost:5432                                 |
-| Redis         | Cache / OTP storage | auth-redis         | 6379 | localhost:6379                                 |
+| PostgreSQL    | Primary database    | auth-postgres      | 5432 |                                                |
+| Redis         | Cache / OTP storage | auth-redis         | 6379 |                                                |
 | Prometheus    | Metrics collection  | auth-prometheus    | 9090 | [http://localhost:9090](http://localhost:9090) |
 | Grafana       | Metrics dashboards  | auth-grafana       | 3001 | [http://localhost:3001](http://localhost:3001) |
-| Elasticsearch | Log storage         | auth-elasticsearch | 9200 | [http://localhost:9200](http://localhost:9200) |
+| Elasticsearch | Log storage         | auth-elasticsearch | 9200 |                                                |
 | Kibana        | Log visualization   | auth-kibana        | 5601 | [http://localhost:5601](http://localhost:5601) |
 | pgAdmin       | DB management UI    | auth-pgadmin       | 5050 | [http://localhost:5050](http://localhost:5050) |
-| Portainer     | Docker UI           | portainer          | 9000 | [http://localhost:9000](http://localhost:9000) |
 
 ---
 
