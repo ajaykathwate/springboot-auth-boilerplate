@@ -1,0 +1,30 @@
+# Maven
+target/
+*.log
+
+# Node / frontend (if ever added)
+node_modules/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Env files
+.env
+.env.*
+
+# Docs
+README.md
+*.md
+
+# Docker
+docker-compose*.yml

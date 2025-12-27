@@ -1,0 +1,133 @@
+version: "3.9"
+
+networks:
+  auth-network:
+    name: auth-network
+    attachable: true
+
+volumes:
+  pg_data:
+  redis_data:
+  backend_logs: {}
+
+services:
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    environment:
+      APP_SERVER_PORT: ${APP_SERVER_PORT}
+      DATASOURCE_HOST: ${DATASOURCE_HOST}
+      DATASOURCE_PORT: ${DATASOURCE_PORT}
+      DATASOURCE_NAME: ${DATASOURCE_NAME}
+      DATASOURCE_USERNAME: ${DATASOURCE_USERNAME}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      APP_JWT_SECRET: ${APP_JWT_SECRET}
+      APP_JWT_REFRESH_SECRET: ${APP_JWT_REFRESH_SECRET}
+      GOOGLE_AUTH_CLIENT_ID: ${GOOGLE_AUTH_CLIENT_ID}
+      GOOGLE_AUTH_CLIENT_SECRET: ${GOOGLE_AUTH_CLIENT_SECRET}
+      GOOGLE_AUTH_REDIRECT_URI: ${GOOGLE_AUTH_REDIRECT_URI}
+
+    networks:
+      - auth-network
+    depends_on:
+      auth-postgres:
+        condition: service_healthy
+      auth-redis:
+        condition: service_started
+    volumes:
+      - backend_logs:/usr/app/logs
+    restart: on-failure
+
+  auth-postgres:
+    image: postgres:16-alpine
+    container_name: auth-postgres
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - auth-network
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: on-failure
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: auth-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - auth-network
+    depends_on:
+      - auth-postgres
+
+  auth-redis:
+    image: redis:7-alpine
+    container_name: auth-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    networks:
+      - auth-network
+    volumes:
+      - redis_data:/data
+    restart: on-failure
+
+  prometheus:
+    image: prom/prometheus
+    container_name: auth-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - auth-network
+
+  grafana:
+    image: grafana/grafana
+    container_name: auth-grafana
+    ports:
+      - "3001:3000"
+    networks:
+      - auth-network
+    depends_on:
+      - prometheus
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: auth-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    networks:
+      - auth-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    container_name: auth-kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - auth-network
+    depends_on:
+      - elasticsearch

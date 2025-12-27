@@ -1,0 +1,159 @@
+#
+# Server Properties
+#
+server:
+  port: ${APP_SERVER_PORT}
+  tomcat:
+    accept-count: 100
+    max-http-form-post-size: 2MB
+    max-swallow-size: 2MB
+  error:
+    include-stacktrace: never
+    include-message: never
+
+#
+# Spring Properties
+#
+spring:
+  application:
+    name: SpringBoot Auth Boilerplate
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: false
+  banner:
+    charset: UTF-8
+    location: classpath:banner.txt
+  output:
+    ansi:
+      enabled: detect
+
+  #
+  # Database Properties
+  #
+  datasource:
+    url: jdbc:postgresql://${DATASOURCE_HOST}:${DATASOURCE_PORT}/${DATASOURCE_NAME}?serverTimezone=UTC
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+  #
+  # Redis Properties
+  #
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+  #
+  # Email Properties
+  #
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: youricedlatteshop@gmail.com
+    password: "kfcf kyba hrab nyij"
+    subject:
+      confirmation: "Iced Latte - Email Confirmation"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  messages:
+    basename: messages/messages
+
+#
+# Cache Properties
+#
+cache:
+  default-ttl: PT10M
+  product-ttl: PT10M
+  brands-ttl: PT24H
+  sellers-ttl: PT24H
+
+#
+# Temporary Cache
+#
+temporary-cache:
+  time:
+    token: 5
+  get-token-enabled: true
+
+#
+# Spring Doc Properties
+#
+springdoc:
+  api-docs:
+    path: /api/docs/schema
+    enabled: true
+  swagger-ui:
+    path: /api/docs/swagger-ui
+    enabled: true
+
+#
+# Management Properties
+#
+management:
+  server:
+    port: ${server.port}
+  endpoint:
+    prometheus:
+      enabled: true
+    shutdown:
+      enabled: true
+    health:
+      enabled: true
+      show-details: when-authorized
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus
+      base-path: /actuator
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  health:
+    redis:
+      enabled: true
+
+#
+# JWT Security Properties
+#
+jwt:
+  header: Authorization
+  secret: ${APP_JWT_SECRET}
+  expiration: 86400000 # 1 day
+  refresh-secret: ${APP_JWT_REFRESH_SECRET}
+  refresh-expiration: 86400000 # 1 day
+
+#
+# Logging Properties
+#
+logging:
+  pattern:
+    file: application-backend-%d{yyyy-MM-dd}.%i.log
+  config: classpath:logback-spring.xml
+
+#
+# Google Auth Properties
+#
+google:
+  auth:
+    server:
+      url: "https://accounts.google.com/o/oauth2/v2/auth"
+  scope: "openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
+  client-id: ${GOOGLE_AUTH_CLIENT_ID}
+  client-secret: ${GOOGLE_AUTH_CLIENT_SECRET}
+  redirectUri: ${GOOGLE_AUTH_REDIRECT_URI}
