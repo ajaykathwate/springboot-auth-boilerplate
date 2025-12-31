@@ -1,69 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!--  CONSOLE LOGGING CONFIGURATION  -->
-    <appender name="ConsoleAppender"
-              class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    <!-- Console appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
     </appender>
 
-    <springProperty scope="context" name="application_name" source="spring.application.name"/>
-
-    <!--  FILE LOGGING CONFIGURATION  -->
-    <appender name="FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- File appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/application.log</file>
-
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp>
-                    <timeZone>UTC</timeZone>
-                </timestamp>
-                <version/>
-                <logLevel/>
-                <message/>
-                <loggerName/>
-                <threadName/>
-                <context/>
-                <pattern>
-                    <omitEmptyFields>true</omitEmptyFields>
-                    <pattern>
-                        {
-                        "trace": {
-                        "trace_id": "%mdc{X-B3-TraceId}",
-                        "span_id": "%mdc{X-B3-SpanId}",
-                        "parent_span_id": "%mdc{X-B3-ParentSpanId}",
-                        "exportable": "%mdc{X-Span-Export}",
-                        "userId": "%X{user.id.key2value}"
-                        }
-                        }
-                    </pattern>
-                </pattern>
-                <mdc>
-                    <excludeMdcKeyName>traceId</excludeMdcKeyName>
-                    <excludeMdcKeyName>spanId</excludeMdcKeyName>
-                    <excludeMdcKeyName>parentId</excludeMdcKeyName>
-                    <excludeMdcKeyName>spanExportable</excludeMdcKeyName>
-                    <excludeMdcKeyName>X-B3-TraceId</excludeMdcKeyName>
-                    <excludeMdcKeyName>X-B3-SpanId</excludeMdcKeyName>
-                    <excludeMdcKeyName>X-B3-ParentSpanId</excludeMdcKeyName>
-                    <excludeMdcKeyName>X-Span-Export</excludeMdcKeyName>
-                </mdc>
-                <stackTrace/>
-            </providers>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
-
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>logs/application-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>1MB</maxFileSize>
+            <maxFileSize>10MB</maxFileSize>
             <maxHistory>30</maxHistory>
-            <totalSizeCap>10MB</totalSizeCap>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
     </appender>
 
+    <!-- ROOT MUST BE LAST -->
     <root level="INFO">
-        <appender-ref ref="ConsoleAppender" />
-        <appender-ref ref="FileAppender" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
