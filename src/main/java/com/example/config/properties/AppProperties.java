@@ -1,4 +1,4 @@
-package com.example.auth.config.properties;
+package com.example.config.properties;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -77,5 +77,11 @@ public class AppProperties {
 
         @NotBlank
         private String redirectUri;
+    }
+
+    @Getter @Setter
+    public static class MagicLink{
+        @NotNull
+        private Long expiration;
     }
 }

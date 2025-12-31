@@ -1,6 +1,5 @@
-package com.example.auth.config.properties;
+package com.example.config.properties;
 
-import com.example.auth.config.properties.AppProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
