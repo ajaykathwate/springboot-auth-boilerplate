@@ -1,4 +1,4 @@
-package com.example.config.properties;
+package com.example.config;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
