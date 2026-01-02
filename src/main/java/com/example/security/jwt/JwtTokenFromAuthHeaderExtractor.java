@@ -1,0 +1,68 @@
+package com.example.security.jwt;
+
+import com.example.security.exception.AbsentBearerHeaderException;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+@Slf4j
+@Service
+public class JwtTokenFromAuthHeaderExtractor {
+    private static final String BEARER_PREFIX = "Bearer ";
+    private static final int MAX_TOKEN_LENGTH = 2048;
+    private static final int MIN_TOKEN_LENGTH = 10;
+
+    @Value("${jwt.header:Authorization}")
+    private String jwtHttpRequestHeader;
+
+    public String extract(final HttpServletRequest request) {
+        String header = request.getHeader(jwtHttpRequestHeader);
+        return extract(header);
+    }
+
+    public String extract(final String header) {
+        return Optional.ofNullable(header)
+            .filter(StringUtils::hasText)
+            .filter(this::isValidBearerHeader)
+            .map(this::extractTokenFromHeader)
+            .filter(this::isValidTokenFormat)
+            .orElseThrow(() -> {
+                log.warn("Invalid or missing Authorization header");
+                return new AbsentBearerHeaderException(
+                    "Missing or invalid Authorization header. Expected format: " + BEARER_PREFIX + "<token>"
+                );
+            });
+    }
+
+    private boolean isValidBearerHeader(String authHeader) {
+        return authHeader.startsWith(BEARER_PREFIX) && authHeader.length() > BEARER_PREFIX.length();
+    }
+
+    private String extractTokenFromHeader(String authHeader) {
+        return authHeader.substring(BEARER_PREFIX.length()).trim();
+    }
+
+    private boolean isValidTokenFormat(String token) {
+        if (!StringUtils.hasText(token)) {
+            log.debug("Token extraction failed: empty token");
+            return false;
+        }
+
+        if (token.length() < MIN_TOKEN_LENGTH || token.length() > MAX_TOKEN_LENGTH) {
+            log.debug("Token extraction failed: invalid token length");
+            return false;
+        }
+
+        // Basic JWT format validation (should have 2 dots for 3 parts)
+        long dotCount = token.chars().filter(ch -> ch == '.').count();
+        if (dotCount != 2) {
+            log.debug("Token extraction failed: invalid JWT format");
+            return false;
+        }
+
+        return true;
+    }
+}
