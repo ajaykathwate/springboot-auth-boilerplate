@@ -21,7 +21,11 @@ public class User {
 
     @NotBlank
     @Column(nullable = false, length = 100)
-    private String name;
+    private String firstName;
+
+    @NotBlank
+    @Column(nullable = false, length = 100)
+    private String lastName;
 
     @Email
     @NotBlank
