@@ -3,6 +3,8 @@ package com.example.security.google;
 import com.example.security.dto.JwtResponse;
 import com.example.security.exception.InvalidGoogleTokenException;
 import com.example.security.jwt.JwtTokenProvider;
+import com.example.user.NameParts;
+import com.example.user.NameUtils;
 import com.example.user.User;
 import com.example.user.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -36,12 +38,14 @@ public class GoogleAuthService {
             throw new InvalidGoogleTokenException("Invalid Google user identifier");
         }
 
-        String name = payload.containsKey("name")
+        String fullName = payload.containsKey("name")
             ? String.valueOf(payload.get("name"))
             : email.substring(0, email.indexOf('@'));
 
+        NameParts nameParts = NameUtils.extractNameParts(fullName, email);
+
         User user = userService.findOrCreateGoogleUser(
-            email, name, googleUserId
+            email, nameParts.firstName(), nameParts.lastName(), googleUserId
         );
 
         Map<String, Object> claims = Map.of(
