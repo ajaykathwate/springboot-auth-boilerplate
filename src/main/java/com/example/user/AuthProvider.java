@@ -1,4 +1,4 @@
-package com.example.auth.entity;
+package com.example.security;
 
 public enum AuthProvider {
   GOOGLE,
