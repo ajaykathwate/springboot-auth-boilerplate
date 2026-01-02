@@ -10,6 +10,7 @@ public class UserController {
 
     @GetMapping
     public String getUser(){
+        // debug here
         return "Ajay Kathwate";
     }
 }
