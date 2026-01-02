@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
+import javax.crypto.SecretKey;
+
 @Getter
 @Setter
 @Validated
@@ -71,12 +73,6 @@ public class AppProperties {
     public static class Google {
         @NotBlank
         private String clientId;
-
-        @NotBlank
-        private String clientSecret;
-
-        @NotBlank
-        private String redirectUri;
     }
 
     @Getter @Setter
