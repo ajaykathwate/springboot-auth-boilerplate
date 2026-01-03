@@ -58,7 +58,7 @@ public class AuthController {
         @RequestBody(required = false) RefreshTokenRequest request,
         HttpServletRequest httpRequest
     ) {
-        // 1️⃣ Invalidate refresh token if present
+        // Invalidate refresh token if present
         if (request != null && request.refreshToken() != null) {
             refreshTokenService.invalidate(request.refreshToken());
         }
