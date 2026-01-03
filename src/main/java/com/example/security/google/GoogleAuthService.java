@@ -2,13 +2,12 @@ package com.example.security.google;
 
 import com.example.security.dto.JwtResponse;
 import com.example.security.exception.InvalidGoogleTokenException;
-import com.example.security.jwt.JwtTokenProvider;
+import com.example.security.jwt.TokenService;
 import com.example.user.NameParts;
 import com.example.user.NameUtils;
 import com.example.user.User;
 import com.example.user.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class GoogleAuthService {
 
     private final GoogleTokenVerifier googleTokenVerifier;
     private final UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenService tokenService;
 
     public JwtResponse loginWithGoogle(String idToken) {
 
@@ -48,14 +47,6 @@ public class GoogleAuthService {
             email, nameParts.firstName(), nameParts.lastName(), googleUserId
         );
 
-        Map<String, Object> claims = Map.of(
-            "userId", user.getId(),
-            "role", user.getRole().authority(),
-            "authProvider", "GOOGLE"
-        );
-
-        String jwt = jwtTokenProvider.generateToken(claims, email);
-
-        return new JwtResponse(jwt, null, jwtTokenProvider.expiresInSeconds());
+        return tokenService.issueTokens(user);
     }
 }
