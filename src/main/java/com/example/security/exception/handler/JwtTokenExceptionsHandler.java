@@ -3,16 +3,17 @@ package com.example.security.exception.handler;
 import com.example.common.dto.ApiErrorResponse;
 import com.example.common.dto.ApiErrorResponseCreator;
 import com.example.security.exception.InvalidGoogleTokenException;
+import com.example.security.exception.InvalidRefreshTokenException;
 import com.example.security.exception.JwtTokenException;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 @RequiredArgsConstructor
 public class JwtTokenExceptionsHandler {
 
@@ -27,9 +28,16 @@ public class JwtTokenExceptionsHandler {
     }
 
     @ExceptionHandler(InvalidGoogleTokenException.class)
-    public ApiErrorResponse handleInvalidGoogleToken(
-        InvalidGoogleTokenException ex
-    ) {
+    public ApiErrorResponse handleInvalidGoogleToken( InvalidGoogleTokenException ex ) {
+        return apiErrorResponseCreator.buildResponse(
+            ex.getMessage(),
+            false,
+            HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    public ApiErrorResponse handleInvalidRefreshTokenException( InvalidRefreshTokenException ex ) {
         return apiErrorResponseCreator.buildResponse(
             ex.getMessage(),
             false,
