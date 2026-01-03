@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -37,18 +36,18 @@ public class JwtTokenProvider {
         }
     }
 
-    public String generateRefreshToken(final UserDetails userDetails) {
+    public String generateRefreshToken(final String email) {
         try {
             Instant now = Instant.now();
             Instant expiry = now.plusMillis(appProperties.getJwt().getRefreshExpiration());
             return Jwts.builder()
-                .subject(userDetails.getUsername())
+                .subject(email)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiry))
                 .signWith(jwtSignKeyProvider.getRefresh())
                 .compact();
         } catch (JwtException exception) {
-            log.error("JWT refresh token creation failed for user: {}", userDetails.getUsername(), exception);
+            log.error("JWT refresh token creation failed for user: {}", email, exception);
             throw new JwtTokenException(exception);
         }
     }
