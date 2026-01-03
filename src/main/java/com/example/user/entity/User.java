@@ -1,4 +1,4 @@
-package com.example.user;
+package com.example.user.entity;
 
 import com.example.security.role.Role;
 import jakarta.persistence.*;

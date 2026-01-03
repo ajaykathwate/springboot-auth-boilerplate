@@ -1,4 +1,4 @@
-package com.example.user;
+package com.example.user.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +10,6 @@ public class UserController {
 
     @GetMapping
     public String getUser(){
-        // debug here
         return "Ajay Kathwate";
     }
 }

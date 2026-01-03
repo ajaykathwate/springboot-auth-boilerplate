@@ -1,7 +1,7 @@
 package com.example.security.jwt;
 
 import com.example.security.dto.JwtResponse;
-import com.example.user.User;
+import com.example.user.entity.User;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

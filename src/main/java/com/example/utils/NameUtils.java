@@ -1,4 +1,4 @@
-package com.example.user;
+package com.example.utils;
 
 import java.util.Arrays;
 

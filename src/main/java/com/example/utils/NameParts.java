@@ -1,3 +1,3 @@
-package com.example.user;
+package com.example.utils;
 
 public record NameParts(String firstName, String lastName) {}

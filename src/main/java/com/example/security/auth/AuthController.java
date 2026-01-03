@@ -4,11 +4,10 @@ import com.example.common.dto.ApiSuccessResponse;
 import com.example.common.dto.ApiSuccessResponseCreator;
 import com.example.security.dto.JwtResponse;
 import com.example.security.dto.RefreshTokenRequest;
-import com.example.security.jwt.JwtTokenProvider;
 import com.example.security.jwt.RefreshTokenService;
 import com.example.security.jwt.TokenService;
-import com.example.user.User;
-import com.example.user.UserService;
+import com.example.user.entity.User;
+import com.example.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final JwtTokenProvider jwtTokenProvider;
     private final ApiSuccessResponseCreator responseCreator;
     private final RefreshTokenService refreshTokenService;
     private final UserService userService;
