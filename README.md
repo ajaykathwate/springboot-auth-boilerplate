@@ -69,8 +69,6 @@ A **production-ready Spring Boot authentication system** with multiple authentic
 | Documentation | SpringDoc OpenAPI |
 | Build Tool | Maven |
 | Containerization | Docker |
-| Monitoring | Prometheus, Grafana |
-| Logging | Elasticsearch, Kibana, Logback |
 
 ---
 
@@ -271,12 +269,6 @@ notification:
 | POST | `/api/auth/refresh` | Refresh access token | Public |
 | POST | `/api/auth/logout` | Logout (invalidate refresh token) | Public |
 
-### User
-
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/api/users` | Get current user info | Bearer Token |
-
 ### Notifications
 
 | Method | Endpoint | Description | Auth |
@@ -476,10 +468,6 @@ FIREBASE_SERVICE_ACCOUNT_PATH=/path/to/firebase-service-account.json
 | pgAdmin | DB management UI | auth-pgadmin | 5050 | http://localhost:5050 |
 | Redis | Cache / Token storage | auth-redis | 6379 | - |
 | RabbitMQ | Message queue | auth-rabbitmq | 5672, 15672 | http://localhost:15672 |
-| Prometheus | Metrics collection | auth-prometheus | 9090 | http://localhost:9090 |
-| Grafana | Metrics dashboards | auth-grafana | 3001 | http://localhost:3001 |
-| Elasticsearch | Log storage | auth-elasticsearch | 9200 | - |
-| Kibana | Log visualization | auth-kibana | 5601 | http://localhost:5601 |
 
 ---
 
@@ -548,7 +536,6 @@ java -jar target/springboot-auth-boilerplate-0.0.1-SNAPSHOT.jar
 ## Documentation Links
 
 - [Notification Service Guide](docs/NOTIFICATION_SERVICE.md) - How to use and extend the notification system
-- [Frontend Integration Guide](docs/FRONTEND_GUIDE.md) - Mobile/Web frontend development guide
 - [Swagger UI](http://localhost:8080/api/docs/swagger-ui) - Interactive API documentation
 
 ---
