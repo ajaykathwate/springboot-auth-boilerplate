@@ -22,14 +22,14 @@ import java.util.*;
 
 /**
  * Implementation of NotificationService.
- * Orchestrates the notification sending flow:
+ * notification sending flow:
  * 1. Rate limit check
  * 2. Template rendering
  * 3. Database persistence
  * 4. Queue publishing
  */
-@Service
 @Slf4j
+@Service
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
@@ -39,11 +39,11 @@ public class NotificationServiceImpl implements NotificationService {
     private final ObjectMapper objectMapper;
 
     public NotificationServiceImpl(
-            NotificationRepository notificationRepository,
-            RateLimiterService rateLimiterService,
-            TemplateRenderer templateRenderer,
-            List<ChannelPublisher> channelPublishers,
-            ObjectMapper objectMapper) {
+        NotificationRepository notificationRepository,
+        RateLimiterService rateLimiterService,
+        TemplateRenderer templateRenderer,
+        List<ChannelPublisher> channelPublishers,
+        ObjectMapper objectMapper) {
         this.notificationRepository = notificationRepository;
         this.rateLimiterService = rateLimiterService;
         this.templateRenderer = templateRenderer;
@@ -60,7 +60,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public List<Long> send(NotificationRequest request) {
         log.info("Sending notification to user {} via {} channels",
-                request.getUserId(), request.getChannels().size());
+            request.getUserId(), request.getChannels().size());
 
         List<Long> notificationIds = new ArrayList<>();
 
@@ -72,11 +72,11 @@ public class NotificationServiceImpl implements NotificationService {
                 }
             } catch (RateLimitExceededException e) {
                 log.warn("Rate limit exceeded for user {} on channel {}: {}",
-                        request.getUserId(), channel, e.getMessage());
+                    request.getUserId(), channel, e.getMessage());
                 // Continue with other channels
             } catch (Exception e) {
                 log.error("Failed to send notification to channel {}: {}",
-                        channel, e.getMessage(), e);
+                    channel, e.getMessage(), e);
                 // Continue with other channels
             }
         }
@@ -94,13 +94,13 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public Long sendEmail(Long userId, String email, String templateCode, String subject, Map<String, Object> templateData) {
         NotificationRequest request = NotificationRequest.builder()
-                .channels(List.of(NotificationChannel.EMAIL))
-                .userId(userId)
-                .templateCode(templateCode)
-                .subject(subject)
-                .recipientDetails(RecipientDetails.builder().email(email).build())
-                .templateData(templateData)
-                .build();
+            .channels(List.of(NotificationChannel.EMAIL))
+            .userId(userId)
+            .templateCode(templateCode)
+            .subject(subject)
+            .recipientDetails(RecipientDetails.builder().email(email).build())
+            .templateData(templateData)
+            .build();
 
         List<Long> ids = send(request);
         return ids.isEmpty() ? null : ids.get(0);
@@ -110,12 +110,12 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public Long sendSms(Long userId, String phone, String templateCode, Map<String, Object> templateData) {
         NotificationRequest request = NotificationRequest.builder()
-                .channels(List.of(NotificationChannel.SMS))
-                .userId(userId)
-                .templateCode(templateCode)
-                .recipientDetails(RecipientDetails.builder().phone(phone).build())
-                .templateData(templateData)
-                .build();
+            .channels(List.of(NotificationChannel.SMS))
+            .userId(userId)
+            .templateCode(templateCode)
+            .recipientDetails(RecipientDetails.builder().phone(phone).build())
+            .templateData(templateData)
+            .build();
 
         List<Long> ids = send(request);
         return ids.isEmpty() ? null : ids.get(0);
@@ -125,12 +125,12 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public Long sendWhatsApp(Long userId, String phone, String templateCode, Map<String, Object> templateData) {
         NotificationRequest request = NotificationRequest.builder()
-                .channels(List.of(NotificationChannel.WHATSAPP))
-                .userId(userId)
-                .templateCode(templateCode)
-                .recipientDetails(RecipientDetails.builder().whatsappNumber(phone).build())
-                .templateData(templateData)
-                .build();
+            .channels(List.of(NotificationChannel.WHATSAPP))
+            .userId(userId)
+            .templateCode(templateCode)
+            .recipientDetails(RecipientDetails.builder().whatsappNumber(phone).build())
+            .templateData(templateData)
+            .build();
 
         List<Long> ids = send(request);
         return ids.isEmpty() ? null : ids.get(0);
@@ -140,13 +140,13 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public Long sendPush(Long userId, String fcmToken, String templateCode, String title, Map<String, Object> templateData) {
         NotificationRequest request = NotificationRequest.builder()
-                .channels(List.of(NotificationChannel.PUSH))
-                .userId(userId)
-                .templateCode(templateCode)
-                .subject(title)
-                .recipientDetails(RecipientDetails.builder().fcmToken(fcmToken).build())
-                .templateData(templateData)
-                .build();
+            .channels(List.of(NotificationChannel.PUSH))
+            .userId(userId)
+            .templateCode(templateCode)
+            .subject(title)
+            .recipientDetails(RecipientDetails.builder().fcmToken(fcmToken).build())
+            .templateData(templateData)
+            .build();
 
         List<Long> ids = send(request);
         return ids.isEmpty() ? null : ids.get(0);
@@ -156,11 +156,11 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public Long sendInApp(Long userId, String templateCode, Map<String, Object> templateData) {
         NotificationRequest request = NotificationRequest.builder()
-                .channels(List.of(NotificationChannel.IN_APP))
-                .userId(userId)
-                .templateCode(templateCode)
-                .templateData(templateData)
-                .build();
+            .channels(List.of(NotificationChannel.IN_APP))
+            .userId(userId)
+            .templateCode(templateCode)
+            .templateData(templateData)
+            .build();
 
         List<Long> ids = send(request);
         return ids.isEmpty() ? null : ids.get(0);
@@ -170,24 +170,24 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional(readOnly = true)
     public Page<NotificationResponse> getUserNotifications(Long userId, Pageable pageable) {
         return notificationRepository
-                .findByUserIdOrderByCreatedAtDesc(userId, pageable)
-                .map(NotificationResponse::fromEntity);
+            .findByUserIdOrderByCreatedAtDesc(userId, pageable)
+            .map(NotificationResponse::fromEntity);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<NotificationResponse> getUserNotifications(Long userId, NotificationChannel channel, Pageable pageable) {
         return notificationRepository
-                .findByUserIdAndChannelOrderByCreatedAtDesc(userId, channel, pageable)
-                .map(NotificationResponse::fromEntity);
+            .findByUserIdAndChannelOrderByCreatedAtDesc(userId, channel, pageable)
+            .map(NotificationResponse::fromEntity);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Page<NotificationResponse> getUnreadNotifications(Long userId, Pageable pageable) {
         return notificationRepository
-                .findByUserIdAndChannelAndIsReadFalseOrderByCreatedAtDesc(userId, NotificationChannel.IN_APP, pageable)
-                .map(NotificationResponse::fromEntity);
+            .findByUserIdAndChannelAndIsReadFalseOrderByCreatedAtDesc(userId, NotificationChannel.IN_APP, pageable)
+            .map(NotificationResponse::fromEntity);
     }
 
     @Override
@@ -221,9 +221,9 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public int markAllAsRead(Long userId) {
         int count = notificationRepository.markAllAsReadForUser(
-                userId,
-                NotificationChannel.IN_APP,
-                LocalDateTime.now()
+            userId,
+            NotificationChannel.IN_APP,
+            LocalDateTime.now()
         );
         log.info("Marked {} notifications as read for user {}", count, userId);
         return count;
@@ -233,7 +233,7 @@ public class NotificationServiceImpl implements NotificationService {
      * Send notification to a specific channel.
      */
     private Long sendToChannel(NotificationRequest request, NotificationChannel channel)
-            throws RateLimitExceededException {
+        throws RateLimitExceededException {
 
         Long userId = request.getUserId();
 
@@ -241,7 +241,7 @@ public class NotificationServiceImpl implements NotificationService {
         if (!Boolean.TRUE.equals(request.getSkipRateLimit())) {
             if (!rateLimiterService.isAllowed(userId, channel)) {
                 throw new RateLimitExceededException(
-                        String.format("Rate limit exceeded for user %d on channel %s", userId, channel)
+                    String.format("Rate limit exceeded for user %d on channel %s", userId, channel)
                 );
             }
         }
@@ -260,9 +260,9 @@ public class NotificationServiceImpl implements NotificationService {
 
         // Render template
         String renderedContent = templateRenderer.render(
-                channel,
-                request.getTemplateCode(),
-                request.getTemplateData()
+            channel,
+            request.getTemplateCode(),
+            request.getTemplateData()
         );
 
         // Serialize template data for audit
@@ -287,18 +287,18 @@ public class NotificationServiceImpl implements NotificationService {
 
         // Create notification entity
         Notification notification = Notification.builder()
-                .userId(userId)
-                .channel(channel)
-                .status(NotificationStatus.PENDING)
-                .templateCode(request.getTemplateCode())
-                .recipient(recipient)
-                .subject(request.getSubject())
-                .renderedContent(renderedContent)
-                .templateData(templateDataJson)
-                .metadata(metadataJson)
-                .isRead(false)
-                .retryCount(0)
-                .build();
+            .userId(userId)
+            .channel(channel)
+            .status(NotificationStatus.PENDING)
+            .templateCode(request.getTemplateCode())
+            .recipient(recipient)
+            .subject(request.getSubject())
+            .renderedContent(renderedContent)
+            .templateData(templateDataJson)
+            .metadata(metadataJson)
+            .isRead(false)
+            .retryCount(0)
+            .build();
 
         // Save to database
         notification = notificationRepository.save(notification);
@@ -313,17 +313,17 @@ public class NotificationServiceImpl implements NotificationService {
 
         // Build message for queue
         NotificationMessage message = NotificationMessage.builder()
-                .notificationId(notificationId)
-                .userId(userId)
-                .channel(channel)
-                .templateCode(request.getTemplateCode())
-                .recipient(recipient)
-                .subject(request.getSubject())
-                .renderedContent(renderedContent)
-                .templateData(request.getTemplateData())
-                .priority(request.getPriority())
-                .retryCount(0)
-                .build();
+            .notificationId(notificationId)
+            .userId(userId)
+            .channel(channel)
+            .templateCode(request.getTemplateCode())
+            .recipient(recipient)
+            .subject(request.getSubject())
+            .renderedContent(renderedContent)
+            .templateData(request.getTemplateData())
+            .priority(request.getPriority())
+            .retryCount(0)
+            .build();
 
         // Publish to queue
         ChannelPublisher publisher = publishers.get(channel);
@@ -345,3 +345,4 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 }
+
