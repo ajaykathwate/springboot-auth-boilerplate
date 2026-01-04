@@ -45,16 +45,6 @@ public class EmailOtpAuthService {
                 "Here is your email verification code",
                 templateData
             );
-
-            notificationService.sendSms(
-                user.getId(),
-                "+919673848533",
-                OTP_TEMPLATE_CODE,
-                Map.of(
-                    "verificationCode", otp,
-                    "expiryMinutes", 5
-                )
-            );
         } catch (Exception ex) {
             log.warn("Failed to send welcome email for userId={}, email={}", user.getId(), email, ex);
         }
