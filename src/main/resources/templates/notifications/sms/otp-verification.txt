@@ -1,0 +1,1 @@
+Your verification code is: [(${verificationCode})]. This code expires in [(${expiryMinutes})] minutes. Do not share this code with anyone.

@@ -3,6 +3,8 @@ package com.example.security.exception.handler;
 import com.example.common.dto.ApiErrorResponse;
 import com.example.common.dto.ApiErrorResponseCreator;
 import com.example.security.exception.InvalidGoogleTokenException;
+import com.example.security.exception.InvalidMagicLinkTokenException;
+import com.example.security.exception.InvalidOtpException;
 import com.example.security.exception.InvalidRefreshTokenException;
 import com.example.security.exception.JwtTokenException;
 import java.util.HashMap;
@@ -38,6 +40,24 @@ public class JwtTokenExceptionsHandler {
 
     @ExceptionHandler(InvalidRefreshTokenException.class)
     public ApiErrorResponse handleInvalidRefreshTokenException( InvalidRefreshTokenException ex ) {
+        return apiErrorResponseCreator.buildResponse(
+            ex.getMessage(),
+            false,
+            HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(InvalidOtpException.class)
+    public ApiErrorResponse handleInvalidOtpException(InvalidOtpException ex) {
+        return apiErrorResponseCreator.buildResponse(
+            ex.getMessage(),
+            false,
+            HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(InvalidMagicLinkTokenException.class)
+    public ApiErrorResponse handleInvalidMagicLinkTokenException(InvalidMagicLinkTokenException ex) {
         return apiErrorResponseCreator.buildResponse(
             ex.getMessage(),
             false,

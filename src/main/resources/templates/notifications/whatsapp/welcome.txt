@@ -1,0 +1,9 @@
+Hello [(${userName})]!
+
+Welcome to our platform! Your account has been created successfully.
+
+Get started: [(${appUrl})]
+
+Need help? Reply to this message or visit our support center.
+
+Thank you for joining us!

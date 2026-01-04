@@ -18,6 +18,9 @@ public class AppProperties {
     private final Redis redis = new Redis();
     private final Jwt jwt = new Jwt();
     private final Google google = new Google();
+    private final Otp otp = new Otp();
+    private final MagicLink magicLink = new MagicLink();
+    private final Frontend frontend = new Frontend();
 
     @Getter @Setter
     public static class Server {
@@ -74,8 +77,25 @@ public class AppProperties {
     }
 
     @Getter @Setter
-    public static class MagicLink{
+    public static class Otp {
         @NotNull
-        private Long expiration;
+        private Integer length = 6;
+
+        @NotNull
+        private Long expirationMinutes = 5L;
+    }
+
+    @Getter @Setter
+    public static class MagicLink {
+        @NotNull
+        private Long expirationMinutes = 10L;
+
+        private String endpoint = "/api/auth/magic-link/verify";
+    }
+
+    @Getter @Setter
+    public static class Frontend{
+        @NotBlank
+        private String baseUrl;
     }
 }
