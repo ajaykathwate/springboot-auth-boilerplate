@@ -53,10 +53,10 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: youricedlatteshop@gmail.com
-    password: "kfcf kyba hrab nyij"
+    username: ${GMAIL_MAIL}
+    password: ${GMAIL_PASSWORD}
     subject:
-      confirmation: "Iced Latte - Email Confirmation"
+      confirmation: "Springboot Auth Boilerplate - Email Confirmation"
     properties:
       mail:
         smtp:
@@ -116,10 +116,23 @@ jwt:
   refresh-expiration: 604800000 # 7 days
 
 #
+# OTP Properties
+#
+otp:
+  length: 6
+  expiration-minutes: 5
+
+#
 # Magic Link Properties
 #
-magic_link:
-  expiration: 15
+magic-link:
+  expiration-minutes: 10
+
+#
+# Frontend Properties
+#
+frontend:
+  base-url: ${FRONTEND_BASE_URL:http://localhost:3000}
 
 #
 # Logging Properties
@@ -203,4 +216,4 @@ notification:
   # Firebase configuration (Push notifications)
   firebase:
     enabled: ${FIREBASE_ENABLED:false}
-    service-account-path: ${FIREBASE_SERVICE_ACCOUNT_PATH:}
+    service-account-path: src/main/resources/firebase-service-account.json

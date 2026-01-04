@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
+    <title>Email Verification Code</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
             padding: 20px;
         }
         .header {
-            background: #4F46E5;
+            background: #059669;
             color: white;
             padding: 20px;
             text-align: center;
@@ -25,15 +25,16 @@
             padding: 30px;
             border: 1px solid #e5e7eb;
         }
-        .button {
-            display: inline-block;
-            background: #4F46E5;
-            color: white !important;
-            padding: 12px 24px;
-            text-decoration: none;
+        .code {
+            background: #e5e7eb;
+            padding: 15px;
+            font-size: 32px;
+            letter-spacing: 8px;
+            text-align: center;
             border-radius: 6px;
-            margin: 20px 0;
+            font-family: monospace;
             font-weight: bold;
+            margin: 20px 0;
         }
         .footer {
             text-align: center;
@@ -46,22 +47,30 @@
 <body>
 
 <div class="header">
-    <h1>Welcome to Our Platform!</h1>
+    <h1>Verify Your Email</h1>
 </div>
 
 <div class="content">
-    <p>Hi <strong th:text="${userName}">User</strong>,</p>
+    <p>Hello,</p>
 
-    <p>Thanks for signing up! Your account has been successfully created.</p>
-    <p>You’re all set and can start using the platform right away.</p>
+    <p>
+        Use the verification code below to confirm your email address.
+        This helps us ensure your account is secure and belongs to you.
+    </p>
 
-    <div style="text-align: center;">
-        <a th:href="${getStartedUrl}" class="button">
-            Get Started
-        </a>
+    <div class="code">
+        <span th:text="${otp}">123456</span>
     </div>
 
-    <p>If you have any questions, feel free to reach out to our support team.</p>
+    <p style="text-align: center; color: #6b7280;">
+        This code will expire in
+        <strong><span th:text="${expirationMinutes}">5</span> minutes</strong>.
+    </p>
+
+    <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
+        If you did not attempt to verify your email address, you can safely ignore this email.
+        No changes will be made to your account.
+    </p>
 
     <p>
         Best regards,<br/>
@@ -70,8 +79,7 @@
 </div>
 
 <div class="footer">
-    <p>This email was sent because you registered on our platform.</p>
-    <p>If you didn’t create this account, you can safely ignore this email.</p>
+    <p>This is an automated message. Please do not reply to this email.</p>
 </div>
 
 </body>
