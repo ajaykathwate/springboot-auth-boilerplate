@@ -1,8 +1,0 @@
-{
-  "title": "Welcome, [(${userName})]!",
-  "body": "Your account is ready. Start exploring now!",
-  "data": {
-    "type": "welcome",
-    "action": "open_app"
-  }
-}

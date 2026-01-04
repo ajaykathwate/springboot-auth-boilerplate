@@ -1,1 +1,0 @@
-Welcome to our platform, [(${userName})]! Your account is ready. Get started at [(${appUrl})]. Reply STOP to unsubscribe.

@@ -8,6 +8,7 @@ networks:
 volumes:
   pg_data:
   redis_data:
+  rabbitmq_data:
   backend_logs: {}
 
 services:
@@ -88,4 +89,25 @@ services:
       - auth-network
     volumes:
       - redis_data:/data
+    restart: on-failure
+
+  auth-rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: auth-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_VHOST: /
+    ports:
+      - "5672:5672"    # AMQP protocol port
+      - "15672:15672"  # Management UI port
+    networks:
+      - auth-network
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     restart: on-failure
