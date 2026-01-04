@@ -30,7 +30,7 @@ public class SpringSecurityConfig {
             .formLogin(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/auth/**", "/api/docs/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(
