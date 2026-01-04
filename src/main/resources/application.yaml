@@ -134,3 +134,73 @@ logging:
 #
 google:
   client-id: ${GOOGLE_AUTH_CLIENT_ID}
+
+#
+# RabbitMQ Properties
+#
+spring.rabbitmq:
+  host: ${RABBITMQ_HOST:localhost}
+  port: ${RABBITMQ_PORT:5672}
+  username: ${RABBITMQ_USERNAME:guest}
+  password: ${RABBITMQ_PASSWORD:guest}
+  virtual-host: ${RABBITMQ_VHOST:/}
+  listener:
+    simple:
+      acknowledge-mode: manual
+      prefetch: 1
+      retry:
+        enabled: false
+
+#
+# Notification Service Properties
+#
+notification:
+  # Rate limiting per channel (requests per time window)
+  rate-limit:
+    email:
+      max-requests: 50
+      window-seconds: 3600
+    sms:
+      max-requests: 10
+      window-seconds: 3600
+    whatsapp:
+      max-requests: 20
+      window-seconds: 3600
+    push:
+      max-requests: 100
+      window-seconds: 3600
+    in_app:
+      max-requests: 200
+      window-seconds: 3600
+
+  # Retry configuration
+  retry:
+    max-attempts: 10
+    initial-backoff-ms: 1000
+    multiplier: 2.0
+    max-backoff-ms: 3600000
+
+  # Queue configuration
+  queue:
+    exchange: notification.exchange
+    dlx-exchange: notification.dlx
+    dlq-queue: notification.dlq
+    prefetch-count: 1
+
+  # Template configuration
+  template:
+    base-path: classpath:/templates/notifications/
+    cache-enabled: true
+
+  # Twilio configuration (SMS & WhatsApp)
+  twilio:
+    enabled: ${TWILIO_ENABLED:false}
+    account-sid: ${TWILIO_ACCOUNT_SID:}
+    auth-token: ${TWILIO_AUTH_TOKEN:}
+    from-number: ${TWILIO_FROM_NUMBER:}
+    whatsapp-number: ${TWILIO_WHATSAPP_NUMBER:}
+
+  # Firebase configuration (Push notifications)
+  firebase:
+    enabled: ${FIREBASE_ENABLED:false}
+    service-account-path: ${FIREBASE_SERVICE_ACCOUNT_PATH:}

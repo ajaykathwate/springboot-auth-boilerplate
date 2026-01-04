@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #059669; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+        .content { background: #f9fafb; padding: 30px; border: 1px solid #e5e7eb; }
+        .button { display: inline-block; background: #059669; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
+        .code { background: #e5e7eb; padding: 15px; font-size: 32px; letter-spacing: 8px; text-align: center; border-radius: 6px; font-family: monospace; font-weight: bold; }
+        .footer { text-align: center; padding: 20px; color: #6b7280; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Verify Your Email</h1>
+    </div>
+    <div class="content">
+        <p>Hi <span th:text="${userName}">User</span>,</p>
+        <p>Please verify your email address by clicking the button below or entering the verification code:</p>
+
+        <div th:if="${verificationUrl}" style="text-align: center;">
+            <a th:href="${verificationUrl}" class="button">Verify Email</a>
+        </div>
+
+        <p style="text-align: center; color: #6b7280;">Or enter this code:</p>
+
+        <div th:if="${verificationCode}" class="code">
+            <span th:text="${verificationCode}">123456</span>
+        </div>
+
+        <p style="text-align: center; color: #6b7280; margin-top: 20px;">
+            This code expires in <span th:text="${expiryMinutes}">15</span> minutes.
+        </p>
+
+        <p>Best regards,<br/>The Team</p>
+    </div>
+    <div class="footer">
+        <p>If you didn't request this verification, please ignore this email.</p>
+    </div>
+</body>
+</html>

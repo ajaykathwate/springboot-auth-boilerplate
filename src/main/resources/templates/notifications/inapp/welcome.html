@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="notification">
+    <h3>Welcome, <span th:text="${userName}">User</span>!</h3>
+    <p>Your account has been created successfully. Start exploring our platform!</p>
+    <div th:if="${verificationUrl}">
+        <a th:href="${verificationUrl}">Verify your email to unlock all features</a>
+    </div>
+</div>
+</body>
+</html>

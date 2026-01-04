@@ -1,0 +1,9 @@
+{
+  "title": "Verify Your Account",
+  "body": "Your verification code is [(${verificationCode})]. Expires in [(${expiryMinutes})] minutes.",
+  "data": {
+    "type": "verification",
+    "code": "[(${verificationCode})]",
+    "action": "verify"
+  }
+}
