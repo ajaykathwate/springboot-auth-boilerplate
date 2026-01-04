@@ -6,10 +6,10 @@ import com.example.notification.model.dto.NotificationResponse;
 import com.example.notification.model.enums.NotificationChannel;
 import com.example.notification.service.NotificationService;
 import com.example.security.principal.SecurityUser;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,12 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
-/**
- * REST controller for notification endpoints.
- * Provides GET endpoints for fetching user notifications.
- */
 @RestController
 @RequestMapping("/api/notifications")
 @RequiredArgsConstructor
@@ -42,8 +36,6 @@ public class NotificationController {
      * Get user's notifications with pagination and optional filtering.
      */
     @GetMapping
-    @Operation(summary = "Get user notifications",
-            description = "Get paginated list of user notifications with optional channel filter")
     public ResponseEntity<ApiSuccessResponse> getNotifications(
             @AuthenticationPrincipal SecurityUser user,
             @Parameter(description = "Filter by channel (EMAIL, SMS, WHATSAPP, PUSH, IN_APP)")
@@ -74,8 +66,6 @@ public class NotificationController {
      * Get a specific notification by ID.
      */
     @GetMapping("/{id}")
-    @Operation(summary = "Get notification by ID",
-            description = "Get a specific notification by its ID")
     public ResponseEntity<ApiSuccessResponse> getNotification(
             @AuthenticationPrincipal SecurityUser user,
             @Parameter(description = "Notification ID")
@@ -101,8 +91,6 @@ public class NotificationController {
      * Get unread in-app notifications.
      */
     @GetMapping("/unread")
-    @Operation(summary = "Get unread notifications",
-            description = "Get paginated list of unread in-app notifications")
     public ResponseEntity<ApiSuccessResponse> getUnreadNotifications(
             @AuthenticationPrincipal SecurityUser user,
             @Parameter(description = "Page number (0-based)")
@@ -126,8 +114,6 @@ public class NotificationController {
      * Get count of unread notifications.
      */
     @GetMapping("/unread/count")
-    @Operation(summary = "Get unread count",
-            description = "Get count of unread in-app notifications")
     public ResponseEntity<ApiSuccessResponse> getUnreadCount(
             @AuthenticationPrincipal SecurityUser user) {
 
@@ -145,8 +131,6 @@ public class NotificationController {
      * Mark a notification as read.
      */
     @PutMapping("/{id}/read")
-    @Operation(summary = "Mark notification as read",
-            description = "Mark a specific notification as read")
     public ResponseEntity<ApiSuccessResponse> markAsRead(
             @AuthenticationPrincipal SecurityUser user,
             @Parameter(description = "Notification ID")
@@ -172,8 +156,6 @@ public class NotificationController {
      * Mark all notifications as read.
      */
     @PutMapping("/read-all")
-    @Operation(summary = "Mark all notifications as read",
-            description = "Mark all in-app notifications as read for the user")
     public ResponseEntity<ApiSuccessResponse> markAllAsRead(
             @AuthenticationPrincipal SecurityUser user) {
 
