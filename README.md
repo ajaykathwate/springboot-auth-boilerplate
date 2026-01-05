@@ -2,8 +2,6 @@
 
 A **production-ready Spring Boot authentication system** with multiple authentication methods, multi-channel notifications, and JWT-based security.
 
----
-
 ## Features
 
 ### Authentication Methods
@@ -32,23 +30,6 @@ A **production-ready Spring Boot authentication system** with multiple authentic
 - RabbitMQ for message queuing
 - Docker Compose for local development
 - Swagger/OpenAPI documentation
-- Prometheus + Grafana for metrics
-- Elasticsearch + Kibana for logs
-
----
-
-## Table of Contents
-
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Quick Start](#quick-start)
-- [Configuration Guide](#configuration-guide)
-- [API Endpoints](#api-endpoints)
-- [Environment Variables](#environment-variables)
-- [Getting Service Credentials](#getting-service-credentials)
-- [Ports & Services Reference](#ports--services-reference)
-- [Documentation Links](#documentation-links)
 
 ---
 
@@ -115,7 +96,6 @@ src/main/resources/
 
 docs/
 ├── NOTIFICATION_SERVICE.md     # Notification system guide
-└── FRONTEND_GUIDE.md           # Mobile/Web integration guide
 ```
 
 ---
@@ -131,7 +111,7 @@ docs/
 **Optional but recommended:**
 - Docker Desktop UI
 - lazydocker (terminal Docker UI)
-- Postman / Insomnia for API testing
+- Postman for API testing
 
 **Verify Installation:**
 ```bash
